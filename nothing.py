@@ -46,4 +46,15 @@ cmd = "gmx grompp -f em.mdp -c solv_ions.gro -p topol.top -o em.tpr"
 os.system(cmd)
 cmd = "gmx mdrun -v -deffnm em"
 os.system(cmd)
-……
+# Equilibration NVT
+……  省略一些数据转换操作
+cmd = "gmx grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -n index.ndx -o nvt.tpr"
+os.system(cmd)
+cmd = "gmx mdrun -deffnm nvt"
+os.system(cmd)
+# Equilibration NPT
+os.system("gmx grompp -f npt.mdp -c nvt.gro -t nvt.cpt -r nvt.gro -p topol.top -n index.ndx -o npt.tpr")
+os.system("gmx mdrun -deffnm npt")
+# Production MD
+os.system("gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -n index.ndx -o md_0_10.tpr")
+os.system("gmx mdrun -deffnm md_0_10")
